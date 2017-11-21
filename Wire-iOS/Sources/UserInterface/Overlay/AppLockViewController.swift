@@ -78,7 +78,15 @@ import CocoaLumberjackSwift
         
         self.dimContents = false
     }
-    
+
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+            self.lockView.setNeedsLayout()
+        })
+    }
+
     fileprivate func resignKeyboardIfNeeded() {
         if self.dimContents {
             self.resignKeyboard()
