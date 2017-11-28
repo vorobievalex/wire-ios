@@ -71,6 +71,13 @@ class TextFieldValidator {
         }
     }
 
+
+    /// Validate a string
+    ///
+    /// - Parameters:
+    ///   - text: the string to validate
+    ///   - kind: the kind of string
+    /// - Returns: return .none if the string is valid, otherwise return error with localized description.
     func validate(text: String?, kind: AccessoryTextField.Kind) -> TextFieldValidator.ValidationError {
         guard let text = text else {
             return .none
@@ -108,17 +115,24 @@ class TextFieldValidator {
 
 extension String {
     public var isEmail: Bool {
+        /// NSDataDetector accepts string starting with "mailto:", we do not accept it
         guard !self.hasPrefix("mailto:") else { return false }
 
         guard let dataDetector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return false }
 
+        /// find the first match
         let range = NSRange(location: 0, length: self.characters.count)
         let firstMatch = dataDetector.firstMatch(in: self, options: NSRegularExpression.MatchingOptions.reportCompletion, range: range)
 
         let numberOfMatches = dataDetector.numberOfMatches(in: self, options: NSRegularExpression.MatchingOptions.reportCompletion, range: range)
 
+        /// if no matches found, it is not an email address
         if firstMatch?.range.location == NSNotFound { return false }
+
+        /// if the match is a link other then email, it is not an email address
         if firstMatch?.url?.scheme != "mailto" { return false }
+
+        /// if only part of the match is a email, self is not a email address
         if firstMatch?.url?.absoluteString.hasSuffix(self) == false { return false }
         if numberOfMatches != 1 { return false }
 
