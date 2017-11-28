@@ -85,12 +85,22 @@ final class TeamCreationStepController: UIViewController {
 
         UIApplication.shared.wr_updateStatusBarForCurrentControllerAnimated(animated)
         mainView.becomeFirstResponder()
+
+        let keyboardHeight = KeyboardFrameObserver.shared().keyboardFrame().height
+        updateKeyboardOffset(keyboardHeight: keyboardHeight)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.wr_updateStatusBarForCurrentControllerAnimated(animated)
         NotificationCenter.default.removeObserver(self)
+    }
+
+    // MARK: - Keyboard shown/hide
+
+    func updateKeyboardOffset(keyboardHeight: CGFloat){
+        self.keyboardOffset.constant = -(keyboardHeight + 10)
+        self.view.layoutIfNeeded()
     }
 
     dynamic func keyboardWillShow(_ notification: Notification) {
@@ -114,9 +124,7 @@ final class TeamCreationStepController: UIViewController {
     func animateViewsToAccomodateKeyboard(with notification: Notification) {
         if let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
-
-            self.keyboardOffset.constant = -(keyboardHeight + 10)
-            self.view.layoutIfNeeded()
+            updateKeyboardOffset(keyboardHeight: keyboardHeight)
         }
     }
 
@@ -219,6 +227,8 @@ final class TeamCreationStepController: UIViewController {
             errorLabel.centerY == errorViewContainer.centerY
             errorLabel.leading == errorViewContainer.leadingMargin
             errorLabel.trailing == errorViewContainer.trailingMargin
+            errorLabel.topMargin == errorViewContainer.topMargin
+            errorLabel.bottomMargin == errorViewContainer.bottomMargin
         }
     }
 }
