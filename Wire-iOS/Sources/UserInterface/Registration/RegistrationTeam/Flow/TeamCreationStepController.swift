@@ -43,6 +43,7 @@ final class TeamCreationStepController: UIViewController {
 
     private var backButton: UIView?
 
+    /// Text Field
     private var mainView: UIView!
     private var secondaryViews: [UIView] = []
 
@@ -73,15 +74,15 @@ final class TeamCreationStepController: UIViewController {
 
         createViews()
         createConstraints()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
         UIApplication.shared.wr_updateStatusBarForCurrentControllerAnimated(animated)
         mainView.becomeFirstResponder()
@@ -206,10 +207,12 @@ final class TeamCreationStepController: UIViewController {
                 break
             }
 
-            mainViewContainer.height == 2 * 56 // Space for two text fields
+            mainViewContainer.height >= 56
+            mainViewContainer.height == 2 * 56 ~ LayoutPriority(750) // Space for two text fields, compressed for iPhone 4s
         }
 
         constrain(view, mainViewContainer, subtextLabel, headlineLabel) { view, inputViewsContainer, subtextLabel, headlineLabel in
+            headlineLabel.top >= view.topMargin + 20
             headlineLabel.bottom == subtextLabel.top - 24
             headlineLabel.leading == view.leadingMargin
             headlineLabel.trailing == view.trailingMargin
@@ -220,7 +223,8 @@ final class TeamCreationStepController: UIViewController {
         }
 
         constrain(mainViewContainer, mainView) { mainViewContainer, mainView in
-            mainView.edges == inset(mainViewContainer.edges, 56, 0, 0, 0)
+            mainView.height == 56
+            mainView.edges == inset(mainViewContainer.edges, 56, 0, 0, 0) ~ LayoutPriority(750)
         }
 
         constrain(errorViewContainer, errorLabel) { errorViewContainer, errorLabel in
@@ -230,6 +234,11 @@ final class TeamCreationStepController: UIViewController {
             errorLabel.topMargin == errorViewContainer.topMargin
             errorLabel.bottomMargin == errorViewContainer.bottomMargin
         }
+
+
+        headlineLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        subtextLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        errorLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
     }
 }
 
