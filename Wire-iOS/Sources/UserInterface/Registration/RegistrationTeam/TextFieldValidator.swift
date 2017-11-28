@@ -71,6 +71,13 @@ class TextFieldValidator {
         }
     }
 
+
+    /// Validate a string
+    ///
+    /// - Parameters:
+    ///   - text: the string to validate
+    ///   - kind: the kind of string
+    /// - Returns: return .none if the string is valid, otherwise return error with localized description.
     func validate(text: String?, kind: AccessoryTextField.Kind) -> TextFieldValidator.ValidationError {
         guard let text = text else {
             return .none
