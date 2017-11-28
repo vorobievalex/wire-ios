@@ -173,8 +173,16 @@ final class TeamCreationStepController: UIViewController {
             errorViewContainer.height == 30
 
             mainViewContainer.bottom == errorViewContainer.top
-            mainViewContainer.leading == view.leading
-            mainViewContainer.trailing == view.trailing
+
+            mainViewContainer.centerX == view.centerX
+            switch UIApplication.shared.keyWindow?.traitCollection.horizontalSizeClass {
+            case .regular?:
+                mainViewContainer.width == 375
+            default:
+                mainViewContainer.width == view.width
+                break
+            }
+
             mainViewContainer.height == 2 * 56 // Space for two text fields
         }
 
