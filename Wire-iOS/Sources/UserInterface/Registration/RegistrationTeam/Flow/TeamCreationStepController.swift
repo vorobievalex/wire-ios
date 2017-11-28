@@ -47,6 +47,7 @@ final class TeamCreationStepController: UIViewController {
     private var secondaryViews: [UIView] = []
 
     private var keyboardOffset: NSLayoutConstraint!
+    private var mainViewAlignVerticalCenter: NSLayoutConstraint!
 
     init(headline: String, subtext: String? = nil, mainView: ViewDescriptor, backButton: ViewDescriptor? = nil, secondaryViews: [ViewDescriptor] = []) {
         self.headline = headline
@@ -78,6 +79,8 @@ final class TeamCreationStepController: UIViewController {
         super.viewWillAppear(animated)
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
 
         UIApplication.shared.wr_updateStatusBarForCurrentControllerAnimated(animated)
@@ -91,6 +94,16 @@ final class TeamCreationStepController: UIViewController {
     }
 
     dynamic func keyboardWillShow(_ notification: Notification) {
+        self.keyboardOffset.isActive = true
+        self.mainViewAlignVerticalCenter.isActive = false
+
+        animateViewsToAccomodateKeyboard(with: notification)
+    }
+
+    dynamic func keyboardWillHide(_ notification: Notification) {
+        self.keyboardOffset.isActive = false
+        self.mainViewAlignVerticalCenter.isActive = true
+
         animateViewsToAccomodateKeyboard(with: notification)
     }
 
@@ -99,10 +112,11 @@ final class TeamCreationStepController: UIViewController {
     }
 
     func animateViewsToAccomodateKeyboard(with notification: Notification) {
-        if let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+        if let userInfo = notification.userInfo, let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardHeight = keyboardFrame.cgRectValue.height
+
             self.keyboardOffset.constant = -(keyboardHeight + 10)
-            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -173,7 +187,8 @@ final class TeamCreationStepController: UIViewController {
             errorViewContainer.height == 30
 
             mainViewContainer.bottom == errorViewContainer.top
-
+            self.mainViewAlignVerticalCenter = mainViewContainer.centerY == view.centerY
+            self.mainViewAlignVerticalCenter.isActive = false
             mainViewContainer.centerX == view.centerX
             switch UIApplication.shared.keyWindow?.traitCollection.horizontalSizeClass {
             case .regular?:
