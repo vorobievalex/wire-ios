@@ -176,10 +176,22 @@ final class TeamCreationStepController: UIViewController {
 
     private func createConstraints() {
         if let backButton = backButton {
-            constrain(view, backButton) { view, backButton in
-                backButton.leading == view.leading + 16
-                backButton.top == view.topMargin + 12
+
+            var backButtonTopMargin: CGFloat = 12 + 20
+            if #available(iOS 10.0, *) {
+                backButtonTopMargin = 12
             }
+
+            constrain(view, backButton, headlineLabel) { view, backButton, headlineLabel in
+                backButton.leading == view.leading + 16
+                backButton.top == view.topMargin + backButtonTopMargin
+                backButton.height == 20
+
+
+                headlineLabel.top >= backButton.bottomMargin + 20
+            }
+
+
         }
 
         constrain(view, secondaryViewsStackView, errorViewContainer, mainViewContainer) { view, secondaryViewsStackView, errorViewContainer, mainViewContainer in
@@ -187,7 +199,8 @@ final class TeamCreationStepController: UIViewController {
             self.keyboardOffset = secondaryViewsStackView.bottom == view.bottom - (keyboardHeight + 10)
             secondaryViewsStackView.leading >= view.leading
             secondaryViewsStackView.trailing <= view.trailing
-            secondaryViewsStackView.height == 42
+            secondaryViewsStackView.height == 42 ~ LayoutPriority(500)
+            secondaryViewsStackView.height >= 13
             secondaryViewsStackView.centerX == view.centerX
 
             errorViewContainer.bottom == secondaryViewsStackView.top
@@ -198,6 +211,7 @@ final class TeamCreationStepController: UIViewController {
             mainViewContainer.bottom == errorViewContainer.top
             self.mainViewAlignVerticalCenter = mainViewContainer.centerY == view.centerY
             self.mainViewAlignVerticalCenter.isActive = false
+
             mainViewContainer.centerX == view.centerX
             switch UIApplication.shared.keyWindow?.traitCollection.horizontalSizeClass {
             case .regular?:
@@ -208,23 +222,29 @@ final class TeamCreationStepController: UIViewController {
             }
 
             mainViewContainer.height >= 56
-            mainViewContainer.height == 2 * 56 ~ LayoutPriority(750) // Space for two text fields, compressed for iPhone 4s
+            mainViewContainer.height == 2 * 56 ~ LayoutPriority(500) // Space for two text fields, compressed for iPhone 4s
         }
 
         constrain(view, mainViewContainer, subtextLabel, headlineLabel) { view, inputViewsContainer, subtextLabel, headlineLabel in
             headlineLabel.top >= view.topMargin + 20
-            headlineLabel.bottom == subtextLabel.top - 24
+            headlineLabel.bottom == subtextLabel.top - 24 ~ LayoutPriority(750)
+            headlineLabel.bottom <= subtextLabel.top - 5
             headlineLabel.leading == view.leadingMargin
             headlineLabel.trailing == view.trailingMargin
 
-            subtextLabel.bottom == inputViewsContainer.top - 24
+            subtextLabel.bottom == inputViewsContainer.top - 24 ~ LayoutPriority(750)
+            subtextLabel.bottom <= inputViewsContainer.top - 5
             subtextLabel.leading == view.leadingMargin
             subtextLabel.trailing == view.trailingMargin
         }
 
         constrain(mainViewContainer, mainView) { mainViewContainer, mainView in
             mainView.height == 56
-            mainView.edges == inset(mainViewContainer.edges, 56, 0, 0, 0) ~ LayoutPriority(750)
+            mainView.top == mainViewContainer.top + 56 ~ LayoutPriority(500)
+            mainView.top <= mainViewContainer.top + 5
+
+            mainView.leading == mainViewContainer.leadingMargin
+            mainView.trailing == mainViewContainer.trailingMargin
         }
 
         constrain(errorViewContainer, errorLabel) { errorViewContainer, errorLabel in
