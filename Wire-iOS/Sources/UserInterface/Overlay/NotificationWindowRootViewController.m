@@ -142,7 +142,11 @@
 -(UIViewController *)topViewController
 {
     UIViewController * topViewController = UIApplication.sharedApplication.wr_topmostViewController;
-    if (self != topViewController && self.class != topViewController.class) {
+    NSString *className = NSStringFromClass([topViewController class]);
+
+    if (self != topViewController &&
+        ![topViewController isKindOfClass: self.class] &&
+        [className compare:@"UIInputWindowController"] != NSOrderedSame) {
         return topViewController;
     }
 
