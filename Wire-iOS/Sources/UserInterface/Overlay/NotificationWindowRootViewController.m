@@ -62,7 +62,7 @@
 - (void)dealloc
 {
     if (self.appLockViewController.parentViewController == self) {
-        [self.appLockViewController wr_removeFromParentViewController];
+        [self.appLockViewController wr_removeFromParentViewController];///FIXME: this line is not called in first dealloc
     }
 }
     
@@ -134,11 +134,26 @@
 
 #pragma mark - Rotation handling (should match up with root)
 
+/**
+ guard against a stack overflow for resursivly calling shouldAutorotate or supportedInterfaceOrientations
+
+ @return nil if topViewController is same as self or same class as self
+ */
+-(UIViewController *)topViewController
+{
+    UIViewController * topViewController = UIApplication.sharedApplication.wr_topmostViewController;
+    if (self != topViewController && self.class != topViewController.class) {
+        return topViewController;
+    }
+
+    return nil;
+}
+
 - (BOOL)shouldAutorotate
 {
-    // guard against a stack overflow
-    if (self != UIApplication.sharedApplication.wr_topmostViewController) {
-        return UIApplication.sharedApplication.wr_topmostViewController.shouldAutorotate;
+    UIViewController * topViewController = [self topViewController];
+    if (topViewController != nil) {
+        return topViewController.shouldAutorotate;
     } else {
         return YES;
     }
@@ -146,9 +161,9 @@
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    // guard against a stack overflow
-    if (self != UIApplication.sharedApplication.wr_topmostViewController) {
-        return UIApplication.sharedApplication.wr_topmostViewController.supportedInterfaceOrientations;
+    UIViewController * topViewController = [self topViewController];
+    if (topViewController != nil) {
+        return topViewController.supportedInterfaceOrientations;
     } else {
         return [UIViewController wr_supportedInterfaceOrientations];
     }

@@ -296,7 +296,10 @@ class AppRootViewController: UIViewController {
         if appState == .authenticated(completedRegistration: false) {
             (overlayWindow.rootViewController as? NotificationWindowRootViewController)?.transitionToLoggedInSession()
         } else {
+            ///FIXME: double init?
+//            if overlayWindow.rootViewController == nil {
             overlayWindow.rootViewController = NotificationWindowRootViewController()
+//            }
         }
 
         if !isClassyInitialized && isClassyRequired(for: appState) {
