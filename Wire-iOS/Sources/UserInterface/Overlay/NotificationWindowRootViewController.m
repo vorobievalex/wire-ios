@@ -137,7 +137,7 @@
 /**
  guard against a stack overflow (when calling shouldAutorotate or supportedInterfaceOrientations)
 
- @return nil if UIApplication.sharedApplication.wr_topmostViewController is same as self or same class as self
+ @return nil if UIApplication.sharedApplication.wr_topmostViewController is same as self or same class as self or it is a "UIInputWindowController"
  */
 -(UIViewController *)topViewController
 {
