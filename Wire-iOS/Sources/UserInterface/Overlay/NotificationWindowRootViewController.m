@@ -62,7 +62,7 @@
 - (void)dealloc
 {
     if (self.appLockViewController.parentViewController == self) {
-        [self.appLockViewController wr_removeFromParentViewController];///FIXME: this line is not called in first dealloc
+        [self.appLockViewController wr_removeFromParentViewController];
     }
 }
     
@@ -135,9 +135,9 @@
 #pragma mark - Rotation handling (should match up with root)
 
 /**
- guard against a stack overflow for resursivly calling shouldAutorotate or supportedInterfaceOrientations
+ guard against a stack overflow (when calling shouldAutorotate or supportedInterfaceOrientations)
 
- @return nil if topViewController is same as self or same class as self
+ @return nil if UIApplication.sharedApplication.wr_topmostViewController is same as self or same class as self
  */
 -(UIViewController *)topViewController
 {
