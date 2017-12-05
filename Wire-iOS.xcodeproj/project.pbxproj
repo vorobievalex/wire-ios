@@ -2525,6 +2525,10 @@
 		F1C9E35E1EADFFB8006438D7 /* TestSetup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSetup.swift; sourceTree = "<group>"; };
 		F1CE2DEF1EF0337F00631D8A /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
 		F1D0445E1ED8675200EAC1DA /* TeamSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamSelectionViewController.swift; sourceTree = "<group>"; };
+		F1FF1D931FD6A5A300C69C3C /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lt; path = lt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F1FF1D941FD6A5A300C69C3C /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = lt; path = lt.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		F1FF1D951FD6A5A300C69C3C /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lt; path = lt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F1FF1D961FD6A5A300C69C3C /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lt; path = lt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F93D58421D7D9184003AE972 /* Analytics+ConversationEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Analytics+ConversationEvents.swift"; sourceTree = "<group>"; };
 		F93D58441D7DA865003AE972 /* ZMConversation+Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ZMConversation+Analytics.swift"; sourceTree = "<group>"; };
 		F93D58461D7DA876003AE972 /* ZMMessage+Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ZMMessage+Analytics.swift"; sourceTree = "<group>"; };
@@ -5446,6 +5450,7 @@
 				et,
 				fi,
 				pl,
+				lt,
 			);
 			mainGroup = 8F42C52F199244A700288E4D;
 			productRefGroup = 8F42C539199244A700288E4D /* Products */;
@@ -6729,6 +6734,7 @@
 				B432ADC21E02E06A00147768 /* et */,
 				B42783641E363BAF00747363 /* fi */,
 				B42430E31E55CE1200D73D1B /* pl */,
+				F1FF1D941FD6A5A300C69C3C /* lt */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -6754,6 +6760,7 @@
 				B432ADC31E02E06B00147768 /* et */,
 				B42783651E363BB000747363 /* fi */,
 				B42430E41E55CE1200D73D1B /* pl */,
+				F1FF1D951FD6A5A300C69C3C /* lt */,
 			);
 			name = InfoPlist.strings;
 			path = "Wire-iOS/Resources";
@@ -6780,6 +6787,7 @@
 				B432ADC11E02E06A00147768 /* et */,
 				B42783631E363BAF00747363 /* fi */,
 				B42430E21E55CE1200D73D1B /* pl */,
+				F1FF1D931FD6A5A300C69C3C /* lt */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -6805,6 +6813,7 @@
 				BF2ADF571E27C40100E81B1E /* et */,
 				B42783661E363BB100747363 /* fi */,
 				B42430E51E55CE1300D73D1B /* pl */,
+				F1FF1D961FD6A5A300C69C3C /* lt */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
