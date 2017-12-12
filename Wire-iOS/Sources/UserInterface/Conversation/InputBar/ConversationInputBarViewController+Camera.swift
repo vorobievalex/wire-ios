@@ -132,11 +132,11 @@ extension ConversationInputBarViewController: CameraKeyboardViewControllerDelega
         confirmImageViewController.onConfirm = { [unowned self] (editedImage: UIImage?) in
             self.dismiss(animated: true, completion: .none)
             
-            if metadata.source == .camera {
-                let selector = #selector(ConversationInputBarViewController.image(_:didFinishSavingWithError:contextInfo:))
-                UIImageWriteToSavedPhotosAlbum(UIImage(data: imageData as Data)!, self, selector, nil)
-            }
-            
+//            if metadata.source == .camera {
+//                let selector = #selector(ConversationInputBarViewController.image(_:didFinishSavingWithError:contextInfo:))
+//                UIImageWriteToSavedPhotosAlbum(UIImage(data: imageData as Data)!, self, selector, nil)
+//            }
+//
             if let editedImage = editedImage, let editedImageData = UIImagePNGRepresentation(editedImage) {
                 metadata.source = .sketch
                 metadata.sketchSource = .cameraGallery

@@ -116,11 +116,11 @@ extension CameraPicker: UIImagePickerControllerDelegate, UINavigationControllerD
             
             try! fileManager.moveItem(at: videoURL, to: videoTempURL)
             
-            if (picker.sourceType == .camera && UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoTempPath)) {
-                let selector = "video:didFinishSavingWithError:contextInfo:"
-                UISaveVideoAtPathToSavedPhotosAlbum(videoTempPath, self, Selector(selector), nil)
-            }
-            
+//            if (picker.sourceType == .camera && UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoTempPath)) {
+//                let selector = "video:didFinishSavingWithError:contextInfo:"
+//                UISaveVideoAtPathToSavedPhotosAlbum(videoTempPath, self, Selector(selector), nil)
+//            }
+//            
             picker.showLoadingView = true
             AVAsset.wr_convertVideo(at: videoTempURL) { resultURL, asset, error in
                 defer {

@@ -341,10 +341,10 @@ const NSTimeInterval ConversationUploadMaxVideoDuration = 4.0f * 60.0f; // 4 min
             DDLogError(@"Cannot move video from %@ to %@: %@", videoURL, videoTempURL, moveError);
         }
         
-        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera && UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoTempURL.path)) {
-            UISaveVideoAtPathToSavedPhotosAlbum(videoTempURL.path, self, @selector(video:didFinishSavingWithError:contextInfo:), NULL);
-        }
-        
+//        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera && UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(videoTempURL.path)) {
+//            UISaveVideoAtPathToSavedPhotosAlbum(videoTempURL.path, self, @selector(video:didFinishSavingWithError:contextInfo:), NULL);
+//        }
+//        
         picker.showLoadingView = YES;
         [AVAsset wr_convertVideoAtURL:videoTempURL toUploadFormatWithCompletion:^(NSURL *resultURL, AVAsset *asset, NSError *error) {
             if (error == nil && resultURL != nil) {

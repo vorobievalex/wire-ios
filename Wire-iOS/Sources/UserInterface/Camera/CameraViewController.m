@@ -527,10 +527,10 @@ static CameraControllerCamera CameraViewControllerToCameraControllerCamera(Camer
         
         if ([self.delegate respondsToSelector:@selector(cameraViewController:didPickImageData:imageMetadata:)]) {
             
-            if (self.savePhotosToCameraRoll) {
-                UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:imageData], self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
-            }
-            
+//            if (self.savePhotosToCameraRoll) {
+//                UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:imageData], self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+//            }
+//            
             [self.delegate cameraViewController:self didPickImageData:self.cameraImageData imageMetadata:self.imageMetadata];
         }
     }];

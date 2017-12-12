@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, CameraViewControllerPreviewSize) {
 @property (nonatomic) CameraViewControllerPreviewSize preferedPreviewSize;
 @property (nonatomic, weak) id <CameraViewControllerDelegate> delegate;
 @property (nonatomic) AnalyticsTracker *analyticsTracker;
-@property (nonatomic) BOOL savePhotosToCameraRoll;
+//@property (nonatomic) BOOL savePhotosToCameraRoll;
 @property (nonatomic) BOOL disableSketch;
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
