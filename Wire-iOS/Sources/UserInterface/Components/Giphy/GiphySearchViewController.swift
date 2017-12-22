@@ -45,7 +45,7 @@ class GiphyCollectionViewCell: UICollectionViewCell {
 
     static let CellIdentifier = "GiphyCollectionViewCell"
 
-    let imageView = FLAnimatedImageView()
+    let imageView = YYAnimatedImageView()
     var ziph: Ziph?
     var representation: ZiphyImageRep?
 
@@ -66,7 +66,7 @@ class GiphyCollectionViewCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
-        self.imageView.animatedImage = nil
+        self.imageView.image = nil
         self.ziph = nil
         self.representation = nil
         self.backgroundColor = nil
@@ -246,8 +246,8 @@ class GiphySearchViewController: UICollectionViewController {
             cell.backgroundColor = UIColor(for: ZMUser.pickRandomAccentColor())
 
             searchResultsController.fetchImageData(forZiph: ziph, imageType: representation.imageType) { (imageData, imageRepresentation, error) in
-                if cell.representation == imageRepresentation {
-                    cell.imageView.animatedImage = FLAnimatedImage(animatedGIFData: imageData)
+                if cell.representation == imageRepresentation, let imageData = imageData {
+                    cell.imageView.image = YYImage(data: imageData)
                 }
             }
         }
@@ -261,17 +261,17 @@ class GiphySearchViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let ziph = searchResultsController.results[indexPath.row]
-        var previewImage: FLAnimatedImage?
-
-        if let cell = collectionView.cellForItem(at: indexPath) as? GiphyCollectionViewCell {
-            previewImage = cell.imageView.animatedImage
-        }
-
-        let confirmationController = GiphyConfirmationViewController(withZiph: ziph, previewImage: previewImage, searchResultController: searchResultsController)
-        confirmationController.title = conversation.displayName.uppercased()
-        confirmationController.delegate = self
-        navigationController?.pushViewController(confirmationController, animated: true)
+//        let ziph = searchResultsController.results[indexPath.row]
+//        var previewImage: FLAnimatedImage?
+//
+//        if let cell = collectionView.cellForItem(at: indexPath) as? GiphyCollectionViewCell {
+//            previewImage = cell.imageView.animatedImage
+//        }
+//
+//        let confirmationController = GiphyConfirmationViewController(withZiph: ziph, previewImage: previewImage, searchResultController: searchResultsController)
+//        confirmationController.title = conversation.displayName.uppercased()
+//        confirmationController.delegate = self
+//        navigationController?.pushViewController(confirmationController, animated: true)
     }
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
