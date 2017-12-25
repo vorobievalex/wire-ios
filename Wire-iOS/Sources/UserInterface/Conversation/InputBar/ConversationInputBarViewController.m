@@ -594,7 +594,7 @@
                                                 modifierFlags:0
                                                        action:@selector(escapePressed)
                                          discoverabilityTitle:NSLocalizedString(@"conversation.input_bar.shortcut.cancel_editing_message", nil)]];
-    } else {
+    } else if(self.inputBar.textView.text.length == 0) {
         [commands addObject:[UIKeyCommand keyCommandWithInput:UIKeyInputUpArrow
                                                 modifierFlags:0
                                                        action:@selector(upArrowPressed)
@@ -682,6 +682,21 @@
             
             self.singleTapGestureRecognizer.enabled = YES;
             [self selectInputControllerButton:self.photoButton];
+            break;
+            
+        case ConversationInputBarViewControllerModeGiphy:
+            [self clearTextInputAssistentItemIfNeeded];
+            
+            if (self.inputController == nil || self.inputController != self.cameraKeyboardViewController) {
+                if (self.cameraKeyboardViewController == nil) {
+                    [self createGiphyKeyboardViewController];
+                }
+                
+                self.inputController = self.cameraKeyboardViewController;
+            }
+            
+            self.singleTapGestureRecognizer.enabled = YES;
+            [self selectInputControllerButton:self.gifButton];
             break;
             
         case ConversationInputBarViewControllerModeEmojiInput:
@@ -1066,22 +1081,53 @@
 
 - (void)giphyButtonPressed:(id)sender
 {
-    if (![AppDelegate checkNetworkAndFlashIndicatorIfNecessary]) {
-        
-        [Analytics.shared tagMediaAction:ConversationMediaActionGif inConversation:self.conversation];
-    
-        NSString *searchTerm = [self.inputBar.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        GiphySearchViewController *giphySearchViewController = [[GiphySearchViewController alloc] initWithSearchTerm:searchTerm conversation:self.conversation];
-        giphySearchViewController.delegate = self;
-        [[ZClientViewController sharedZClientViewController] presentViewController:[giphySearchViewController wrapInsideNavigationController] animated:YES completion:^{
-            [[UIApplication sharedApplication] wr_updateStatusBarForCurrentControllerAnimated:YES];
+    if (self.mode == ConversationInputBarViewControllerModeGiphy) {
+        [self.inputBar.textView resignFirstResponder];
+        self.cameraKeyboardViewController = nil;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.mode = ConversationInputBarViewControllerModeTextInput;
+        });
+    }
+    else {
+        [UIApplication wr_requestOrWarnAboutVideoAccess:^(BOOL granted) {
+            [self executeWithCameraRollPermission:^(BOOL success){
+                self.mode = ConversationInputBarViewControllerModeGiphy;
+                [self.inputBar.textView becomeFirstResponder];
+            }];
         }];
     }
 }
 
+//- (void)giphyButtonPressed:(id)sender
+//{
+//    if (![AppDelegate checkNetworkAndFlashIndicatorIfNecessary]) {
+//
+//        [Analytics.shared tagMediaAction:ConversationMediaActionGif inConversation:self.conversation];
+//
+////        NSString *searchTerm = [self.inputBar.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+////        GiphySearchViewController *giphySearchViewController = [[GiphySearchViewController alloc] initWithSearchTerm:searchTerm conversation:self.conversation];
+////        giphySearchViewController.delegate = self;
+////        [[ZClientViewController sharedZClientViewController] presentViewController:[giphySearchViewController wrapInsideNavigationController] animated:YES completion:^{
+////            [[UIApplication sharedApplication] wr_updateStatusBarForCurrentControllerAnimated:YES];
+////        }];
+//        [self clearTextInputAssistentItemIfNeeded];
+//
+//        if (self.inputController == nil || self.inputController != self.cameraKeyboardViewController) {
+//            if (self.cameraKeyboardViewController == nil) {
+//                [self createCameraKeyboardViewController];
+//            }
+//
+//            self.inputController = self.cameraKeyboardViewController;
+//        }
+//        self.singleTapGestureRecognizer.enabled = YES;
+//        [self selectInputControllerButton:self.photoButton];
+//
+//        [self updateRightAccessoryView];
+//        [self updateButtonIconsForEphemeral];
+//    }
+//}
+
 @end
-
-
 
 #pragma mark - SendButton
 

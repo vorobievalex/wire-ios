@@ -27,22 +27,22 @@ import AVFoundation
 class CameraKeyboardViewControllerDelegateMock: CameraKeyboardViewControllerDelegate {
     
     var cameraKeyboardWantsToOpenCameraRollHitCount: UInt = 0
-    @objc func cameraKeyboardViewControllerWantsToOpenCameraRoll(_ controller: CameraKeyboardViewController) {
+    @objc func cameraKeyboardViewControllerWantsToOpenCameraRoll(_ controller: GalleryKeyboardViewController) {
         cameraKeyboardWantsToOpenCameraRollHitCount = cameraKeyboardWantsToOpenCameraRollHitCount + 1
     }
     
     var cameraKeyboardWantsToOpenFullScreenCameraHitCount: UInt = 0
-    @objc func cameraKeyboardViewControllerWantsToOpenFullScreenCamera(_ controller: CameraKeyboardViewController) {
+    @objc func cameraKeyboardViewControllerWantsToOpenFullScreenCamera(_ controller: GalleryKeyboardViewController) {
         cameraKeyboardWantsToOpenFullScreenCameraHitCount = cameraKeyboardWantsToOpenFullScreenCameraHitCount + 1
     }
     
     var cameraKeyboardDidSelectVideoHitCount: UInt = 0
-    @objc func cameraKeyboardViewController(_ controller: CameraKeyboardViewController, didSelectVideo: URL, duration: TimeInterval) {
+    @objc func cameraKeyboardViewController(_ controller: GalleryKeyboardViewController, didSelectVideo: URL, duration: TimeInterval) {
         cameraKeyboardDidSelectVideoHitCount = cameraKeyboardDidSelectVideoHitCount + 1
     }
     
     var cameraKeyboardViewControllerDidSelectImageDataHitCount: UInt = 0
-    @objc func cameraKeyboardViewController(_ controller: CameraKeyboardViewController, didSelectImageData: Data, metadata: ImageMetadata) {
+    @objc func cameraKeyboardViewController(_ controller: GalleryKeyboardViewController, didSelectImageData: Data, metadata: ImageMetadata) {
         cameraKeyboardViewControllerDidSelectImageDataHitCount = cameraKeyboardViewControllerDidSelectImageDataHitCount + 1
     }
 }
@@ -62,7 +62,7 @@ private final class MockAssetLibrary: AssetLibrary {
 }
 
 final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
-    var sut: CameraKeyboardViewController!
+    var sut: GalleryKeyboardViewController!
     var splitView: SplitLayoutObservableMock!
     var delegateMock: CameraKeyboardViewControllerDelegateMock!
     var assetLibrary: AssetLibrary!
@@ -97,7 +97,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
     
     func testThatFirstSectionContainsCameraCellOnly() {
         // given
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         self.sut.delegate = self.delegateMock
         self.prepareForSnapshot()
         
@@ -112,7 +112,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
 
     func testThatSecondSectionContainsCameraRollElements() {
         // given
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         self.sut.delegate = self.delegateMock
         self.prepareForSnapshot()
         
@@ -128,7 +128,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
         // given
         self.splitView?.layoutSize = .compact
         // when
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         // then
         self.verify(view: self.prepareForSnapshot())
     }
@@ -138,7 +138,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
         self.splitView?.layoutSize = .regularPortrait
         self.splitView?.leftViewControllerWidth = 216
         // when
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         // then
         self.verify(view: self.prepareForSnapshot(CGSize(width: 768, height: 264)))
     }
@@ -148,7 +148,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
         self.splitView?.layoutSize = .regularLandscape
         self.splitView?.leftViewControllerWidth = 216
         // when
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         // then
         self.verify(view: self.prepareForSnapshot(CGSize(width: 1024, height: 352)))
     }
@@ -156,7 +156,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
     func testCameraScrolledHorisontallySomePercent() {
         // given
         self.splitView?.layoutSize = .compact
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         self.prepareForSnapshot()
         // when
         self.sut.collectionView.scrollRectToVisible(CGRect(x: 300, y: 0, width: 160, height: 10), animated: false)
@@ -167,7 +167,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
     func testCameraScrolledHorisontallyAwayPercent() {
         // given
         self.splitView?.layoutSize = .compact
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         self.prepareForSnapshot()
         // when
         self.sut.collectionView.scrollRectToVisible(CGRect(x: 320, y: 0, width: 160, height: 10), animated: false)
@@ -177,7 +177,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
     
     func testThatItCallsDelegateCameraRollWhenCameraRollButtonPressed() {
         // given
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         self.sut.delegate = self.delegateMock
         self.prepareForSnapshot()
         
@@ -193,7 +193,7 @@ final class CameraKeyboardViewControllerTests: ZMSnapshotTestCase {
     
     func testThatItCallsDelegateWhenWantsToOpenFullScreenCamera() {
         // given
-        self.sut = CameraKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
+        self.sut = GalleryKeyboardViewController(splitLayoutObservable: self.splitView, assetLibrary: assetLibrary)
         self.sut.delegate = self.delegateMock
         self.prepareForSnapshot()
         

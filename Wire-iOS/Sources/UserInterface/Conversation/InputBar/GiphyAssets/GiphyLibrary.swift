@@ -20,11 +20,11 @@
 import Foundation
 import Photos
 
-public protocol AssetLibraryDelegate: class {
-    func assetLibraryDidChange(_ library: AssetLibrary)
-}
-
-open class AssetLibrary {
+//public protocol AssetLibraryDelegate: class {
+//    func giphyLibraryDidChange(_ library: GiphyLibrary)
+//}
+//
+open class GiphyLibrary: AssetLibrary {
     open weak var delegate: AssetLibraryDelegate?
     fileprivate var fetchingAssets = false
     open let synchronous: Bool
@@ -49,6 +49,10 @@ open class AssetLibrary {
             throw AssetError.outOfRange
         }
         return fetch.object(at: Int(index))
+    }
+    
+    public func refetchAssets() {
+        refetchAssets(synchronous: false)
     }
     
     open func refetchAssets(synchronous: Bool = false) {

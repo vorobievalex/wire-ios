@@ -47,17 +47,25 @@ class StatusBarVideoEditorController: UIVideoEditorController {
     }
 }
 
-extension ConversationInputBarViewController: CameraKeyboardViewControllerDelegate {
+extension ConversationInputBarViewController: GalleryKeyboardViewControllerDelegate {
     
     @objc public func createCameraKeyboardViewController() {
         guard let splitViewController = ZClientViewController.shared()?.splitViewController else { return }
-        let cameraKeyboardViewController = CameraKeyboardViewController(splitLayoutObservable: splitViewController)
+        let cameraKeyboardViewController = GalleryKeyboardViewController(splitLayoutObservable: splitViewController)
         cameraKeyboardViewController.delegate = self
         
         self.cameraKeyboardViewController = cameraKeyboardViewController
     }
     
-    public func cameraKeyboardViewController(_ controller: CameraKeyboardViewController, didSelectVideo videoURL: URL, duration: TimeInterval) {
+    @objc public func createGiphyKeyboardViewController() {
+        guard let splitViewController = ZClientViewController.shared()?.splitViewController else { return }
+        let cameraKeyboardViewController = GalleryKeyboardViewController(splitLayoutObservable: splitViewController, assetLibrary: GiphyLibrary())
+        cameraKeyboardViewController.delegate = self
+        
+        self.cameraKeyboardViewController = cameraKeyboardViewController
+    }
+    
+    public func cameraKeyboardViewController(_ controller: GalleryKeyboardViewController, didSelectVideo videoURL: URL, duration: TimeInterval) {
         // Video can be longer than allowed to be uploaded. Then we need to add user the possibility to trim it.
         if duration > ConversationUploadMaxVideoDuration {
             let videoEditor = StatusBarVideoEditorController()
@@ -97,7 +105,7 @@ extension ConversationInputBarViewController: CameraKeyboardViewControllerDelega
         }
     }
     
-    public func cameraKeyboardViewController(_ controller: CameraKeyboardViewController, didSelectImageData imageData: Data, metadata: ImageMetadata) {
+    public func cameraKeyboardViewController(_ controller: GalleryKeyboardViewController, didSelectImageData imageData: Data, metadata: ImageMetadata) {
         self.showConfirmationForImage(imageData as NSData, metadata: metadata)
     }
     
@@ -107,7 +115,7 @@ extension ConversationInputBarViewController: CameraKeyboardViewControllerDelega
         }
     }
     
-    public func cameraKeyboardViewControllerWantsToOpenFullScreenCamera(_ controller: CameraKeyboardViewController) {
+    public func cameraKeyboardViewControllerWantsToOpenFullScreenCamera(_ controller: GalleryKeyboardViewController) {
         self.hideCameraKeyboardViewController {
             self.shouldRefocusKeyboardAfterImagePickerDismiss = true
             self.videoSendContext = ConversationMediaVideoContext.fullCameraKeyboard.rawValue
@@ -115,7 +123,7 @@ extension ConversationInputBarViewController: CameraKeyboardViewControllerDelega
         }
     }
     
-    public func cameraKeyboardViewControllerWantsToOpenCameraRoll(_ controller: CameraKeyboardViewController) {
+    public func cameraKeyboardViewControllerWantsToOpenCameraRoll(_ controller: GalleryKeyboardViewController) {
         self.hideCameraKeyboardViewController {
             self.shouldRefocusKeyboardAfterImagePickerDismiss = true
             self.presentImagePicker(with: .photoLibrary, mediaTypes: [kUTTypeMovie as String, kUTTypeImage as String], allowsEditing: false)
